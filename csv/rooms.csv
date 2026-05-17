@@ -1,0 +1,11 @@
+room_id,name,capacity,building
+1,A201,60,Glavny
+2,B112,30,Severny
+3,C305,100,Vostochny
+4,D004,15,Glavny
+5,E208,45,Zapadny
+6,F310,80,Severny
+7,G115,20,Glavny
+8,H420,120,Vostochny
+9,I203,50,Zapadny
+10,J501,25,Severny
