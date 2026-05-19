@@ -13,6 +13,11 @@ def main():
     db.create_requests_table(cursor)
     conn.commit()
 
+    db.fill_rooms_table(cursor)
+    conn.commit()
+    
+    db.fill_requests_table(cursor)
+    conn.commit()
 
 if __name__ == '__main__':
     main()
