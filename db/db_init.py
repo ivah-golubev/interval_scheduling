@@ -100,6 +100,19 @@ def fill_requests_table(cursor: sqlite3.Cursor,
 
     return fill_table(cursor, filename, query, fields, get_requests_data)
 
+def create_requests_rooms_view(cursor: sqlite3.Cursor):
+    query = """
+    CREATE VIEW IF NOT EXISTS requests_rooms
+    AS
+    SELECT req.*, 
+        rooms.name AS room_name, 
+        rooms.capacity AS room_capacity, 
+        rooms.building AS room_building
+    FROM requests as req
+    LEFT JOIN rooms ON req.room_id = rooms.room_id
+    """
+    cursor.execute(query)
+
 def clear_rooms_table(cursor: sqlite3.Cursor):
     cursor.execute("DELETE FROM rooms")
 

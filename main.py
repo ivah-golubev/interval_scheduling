@@ -2,6 +2,8 @@ import sqlite3
 import argparse
 
 import db.db_init as db
+import db.db_requests as db_req
+from enums.Day import Day
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--fill_tables', dest='fill_tables', action='store_true')
@@ -35,6 +37,7 @@ def main():
         conn.commit()
 
     db.create_requests_rooms_view(cursor)
+    conn.commit()
 
 if __name__ == '__main__':
     main()
