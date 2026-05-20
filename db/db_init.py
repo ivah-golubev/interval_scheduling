@@ -99,3 +99,9 @@ def fill_requests_table(cursor: sqlite3.Cursor,
     """
 
     return fill_table(cursor, filename, query, fields, get_requests_data)
+
+def clear_rooms_table(cursor: sqlite3.Cursor):
+    cursor.execute("DELETE FROM rooms")
+
+def clear_requests_table(cursor: sqlite3.Cursor):
+    cursor.execute("DELETE FROM requests")
