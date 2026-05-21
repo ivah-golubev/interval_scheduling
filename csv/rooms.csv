@@ -8,4 +8,6 @@ room_id,name,capacity,building
 7,G408,120,Glavny
 8,H109,50,Vostochny
 9,I202,35,Yuzhny
-10,J315,70,Severny
+10,J315,90,
+11,T565,100,
+12,K809,40,

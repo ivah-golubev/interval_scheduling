@@ -40,7 +40,7 @@ req_id,room_id,course,start_minute,end_minute,day
 39,8,Economics,540,600,Mon
 40,6,Programming,540,630,Thu
 41,2,calculus,660,750,tue
-42,1,Physics,630,720,Mon
+42,11,Physics,630,720,Mon
 43,3,Mathematics,510,600,Wed
 44,5,Economics,480,540,Fri
 45,9,Art,540,630,Tue
@@ -79,7 +79,7 @@ req_id,room_id,course,start_minute,end_minute,day
 78,9,Biology,600,690,Thu
 79,10,Art,660,750,Fri
 80,6,Chemistry,540,630,Wed
-81,2,Philosophy,540,600,Tue
+81,12,Philosophy,540,600,Tue
 82,1,Economics,570,660,Mon
 83,5,Physics,660,750,Fri
 84,3,History,600,690,Wed
@@ -129,7 +129,7 @@ req_id,room_id,course,start_minute,end_minute,day
 128,4,Programming,510,600,Fri
 129,10,Mathematics,480,540,Mon
 130,6,Chemistry,660,750,Tue
-131,1, ART,600,690,Mon
+131,13, ART,600,690,Mon
 132,2,Calculus,630,720,Wed
 133,5,Sociology,540,630,wed
 134,3,Philosophy,660,750,tue
@@ -161,7 +161,7 @@ req_id,room_id,course,start_minute,end_minute,day
 160,6,calculus,660,750,tue
 161,1,Biology,600,690,Wed
 162,2,Philosophy,630,720,Wed
-163,5,History,660,750,Tue
+163,13,History,660,750,Tue
 164,3,Mathematics,540,630,Fri
 165,8,Sociology,570,660,Thu
 166,7,Art,570,660,Thu
@@ -243,12 +243,12 @@ req_id,room_id,course,start_minute,end_minute,day
 242,2,Art,630,720,Tue
 243,5,Sociology,570,660,Fri
 244,3,Economics,540,600,Wed
-245,8,Programming,540,630,Wed
+245,88,Programming,540,630,Wed
 246,7,Literature,600,690,Tue
 247,9,Biology,660,750,Thu
 248,4,Philosophy,660,750,Thu
 249,10,Chemistry,570,660,Fri
-250,6,Physics,480,540,Mon
+250,11,Physics,480,540,Mon
 251,1,Mathematics,510,600,Mon
 252,2,History,630,720,Tue
 253,5,Philosophy,570,660,Fri
@@ -759,7 +759,7 @@ req_id,room_id,course,start_minute,end_minute,day
 758,4,Philosophy,570,660,Thu
 759,10,Biology,510,600,Fri
 760,6,Physics,600,690,Mon
-761,1,Chemistry,630,720,Mon
+761,11,Chemistry,630,720,Mon
 762,2,Mathematics,540,600,Tue
 763,5,Economics,480,540,Fri
 764,3,History,660,750,Wed
@@ -770,7 +770,7 @@ req_id,room_id,course,start_minute,end_minute,day
 769,10,Programming,510,600,Fri
 770,6,Philosophy,600,690,Mon
 771,1,Calculus,630,720,Mon
-772,2,Biology,540,600,Tue
+772,22,Biology,540,600,Tue
 773,5,History,480,540,Fri
 774,3,Chemistry,660,750,Wed
 775,8,Philosophy,660,750,Wed
@@ -812,7 +812,7 @@ req_id,room_id,course,start_minute,end_minute,day
 811,1,Calculus,540,630,Mon
 812,2,Physics,600,690,Tue
 813,5,Chemistry,570,660,Fri
-814,3,Literature,480,570,Wed
+814,13,Literature,480,570,Wed
 815,8,History,540,600,Wed
 816,7,Mathematics,630,720,Tue
 817,9,Art,690,780,Thu
@@ -865,7 +865,7 @@ req_id,room_id,course,start_minute,end_minute,day
 864,3,History,660,750,Wed
 865,8,Physics,660,750,Wed
 866,7,Sociology,540,630,Tue
-867,9,Literature,570,660,Thu
+867,12,Literature,570,660,Thu
 868,4,Art,570,660,Thu
 869,10,Programming,510,600,Fri
 870,6,Philosophy,600,690,Mon
@@ -950,7 +950,7 @@ req_id,room_id,course,start_minute,end_minute,day
 949,10,Mathematics,510,600,Fri
 950,6,Programming,600,690,Mon
 951,1,History,630,720,Mon
-952,2,Art,540,600,Tue
+952,11,Art,540,600,Tue
 953,5,Sociology,480,540,Fri
 954,3,Economics,660,750,Wed
 955,8,Programming,660,750,Wed

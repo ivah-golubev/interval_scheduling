@@ -29,3 +29,16 @@ def select_requests_within_day_interval(cursor: sqlite3.Cursor, day: Day,
     cursor.execute(query, (start_minute, end_minute, day.value,))
 
     return cursor.lastrowid
+
+def select_requests_without_room_building(cursor: sqlite3.Cursor):
+    query = """
+    SELECT req.req_id, req.course, req.start_minute, req.end_minute, req.day,
+        rooms.name, rooms.capacity
+    FROM requests AS req
+    LEFT JOIN rooms ON req.room_id = rooms.room_id
+    WHERE rooms.building IS NULL OR rooms.building = ''
+    ORDER BY req.room_id
+    """
+    cursor.execute(query)
+
+    return cursor.lastrowid
