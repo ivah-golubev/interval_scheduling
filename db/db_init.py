@@ -29,7 +29,7 @@ def create_requests_table(cursor: sqlite3.Cursor):
     )"""
     cursor.execute(query)
     
-    idx_query = "CREATE INDEX IF NOT EXISTS idx_requests_day ON requests (lower(day))"
+    idx_query = "CREATE INDEX IF NOT EXISTS idx_requests_day ON requests (day)"
     cursor.execute(idx_query)
 
 def fill_table(cursor: sqlite3.Cursor, filename, query: str, fields: set,
