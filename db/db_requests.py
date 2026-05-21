@@ -2,15 +2,6 @@ import sqlite3
 
 from enums.Day import Day
 
-def select_requests_by_day(cursor: sqlite3.Cursor, day: Day):
-    query = """
-    SELECT * FROM requests_rooms
-    WHERE day = ?
-    """
-    cursor.execute(query, (day.value,))
-    
-    return cursor.lastrowid
-
 def select_popular_courses_per_room(cursor: sqlite3.Cursor, multiplier):
     query = """
     SELECT room_name, course, count(course) as course_count
@@ -26,5 +17,15 @@ def select_popular_courses_per_room(cursor: sqlite3.Cursor, multiplier):
 
     """
     cursor.execute(query, (1 - multiplier,))
+
+    return cursor.lastrowid
+
+def select_requests_within_day_interval(cursor: sqlite3.Cursor, day: Day,
+                                        start_minute = 0, end_minute = 1440):
+    query = """
+    SELECT * FROM requests_rooms
+    WHERE start_minute >= ? AND end_minute < ? AND day = ?
+    """
+    cursor.execute(query, (start_minute, end_minute, day.value,))
 
     return cursor.lastrowid

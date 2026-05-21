@@ -609,7 +609,7 @@ req_id,room_id,course,start_minute,end_minute,day
 608,4,Physics,570,660,Thu
 609,10,Mathematics,510,600,Fri
 610,6,Programming,600,690,Mon
-611,1,Calculus,540,630,Mon
+611,1,Calculus,540,1500,Mon
 612,2,Physics,600,690,Tue
 613,5,Chemistry,570,660,Fri
 614,3,Literature,480,570,Wed
@@ -873,7 +873,7 @@ req_id,room_id,course,start_minute,end_minute,day
 872,2,Biology,540,600,Tue
 873,5,History,480,540,Fri
 874,3,Chemistry,660,750,Wed
-875,8,Philosophy,660,750,Wed
+875,8,Philosophy,660,2000,Wed
 876,7,Economics,540,630,Tue
 877,9,Sociology,570,660,Thu
 878,4,Mathematics,570,660,Thu
@@ -996,6 +996,6 @@ req_id,room_id,course,start_minute,end_minute,day
 995,8,Mathematics,660,750,Wed
 996,7,Chemistry,540,630,Tue
 997,9,History,570,660,Thu
-998,4,Programming,570,660,Thu
+998,4,Programming,570,1440,Thu
 999,10,Art,510,600,Fri
 1000,6,Biology,600,690,Mon
