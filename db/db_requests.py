@@ -42,3 +42,28 @@ def select_requests_without_room_building(cursor: sqlite3.Cursor):
     cursor.execute(query)
 
     return cursor.lastrowid
+
+def select_top_rooms_workload_within_day(cursor: sqlite3.Cursor, day: Day, limit = -1):
+    if limit == -1:
+        query = """
+        SELECT room_name, sum(end_minute - start_minute) as total_minutes
+        FROM requests_rooms 
+        WHERE day = ? AND start_minute < end_minute 
+            AND start_minute >= 0 AND end_minute < 1440
+        GROUP BY room_id
+        ORDER BY total_minutes DESC
+        """
+        cursor.execute(query, (day.value,))
+    else:
+        query = """
+        SELECT room_name, sum(end_minute - start_minute) as total_minutes
+        FROM requests_rooms 
+        WHERE day = ? AND start_minute < end_minute
+            AND start_minute >= 0 AND end_minute < 1440
+        GROUP BY room_id
+        ORDER BY total_minutes DESC
+        LIMIT ?
+        """
+        cursor.execute(query, (day.value, limit,))
+
+        return cursor.lastrowid
