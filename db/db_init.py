@@ -28,6 +28,9 @@ def create_requests_table(cursor: sqlite3.Cursor):
         ON DELETE CASCADE
     )"""
     cursor.execute(query)
+    
+    idx_query = "CREATE INDEX IF NOT EXISTS idx_requests_day ON requests (lower(day))"
+    cursor.execute(idx_query)
 
 def fill_table(cursor: sqlite3.Cursor, filename, query: str, fields: set,
                get_row_data: Callable[[Iterable], tuple]) -> int | None:

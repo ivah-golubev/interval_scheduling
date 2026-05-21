@@ -39,5 +39,8 @@ def main():
     db.create_requests_rooms_view(cursor)
     conn.commit()
 
+    db_req.select_requests_by_day(cursor, Day.TUESDAY)
+    print(*cursor.fetchall(), sep='\n')
+
 if __name__ == '__main__':
     main()
