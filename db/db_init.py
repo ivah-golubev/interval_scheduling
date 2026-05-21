@@ -112,7 +112,7 @@ def create_requests_rooms_view(cursor: sqlite3.Cursor):
         rooms.capacity AS room_capacity, 
         rooms.building AS room_building
     FROM requests as req
-    LEFT JOIN rooms ON req.room_id = rooms.room_id
+    INNER JOIN rooms ON req.room_id = rooms.room_id
     """
     cursor.execute(query)
 
