@@ -72,8 +72,8 @@ def fill_rooms_table(cursor: sqlite3.Cursor,
     fields = { 'room_id', 'name', 'capacity', 'building' }
     
     get_rooms_data = lambda row: (
-        int(row['room_id']), row['name'], 
-        int(row['capacity'] or 0), row['building']
+        int(row['room_id']), row['name'].lower().strip(), 
+        int(row['capacity'] or 0), row['building'].lower().strip()
         )
     
     query = """
@@ -90,8 +90,9 @@ def fill_requests_table(cursor: sqlite3.Cursor,
         'start_minute', 'end_minute', 'day' }
     
     get_requests_data = lambda row: (
-        int(row['req_id']), int(row['room_id']), row['course'],
-        int(row['start_minute'] or 0), int(row['end_minute'] or 0), row['day']
+        int(row['req_id']), int(row['room_id']), row['course'].lower().strip(),
+        int(row['start_minute'] or 0), int(row['end_minute'] or 0), 
+        row['day'].lower().strip()
         )
     
     query = """
