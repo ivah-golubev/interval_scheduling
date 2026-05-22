@@ -3,7 +3,11 @@ import csv
 import sys
 from typing import Callable, Iterable
 
-def create_rooms_table(cursor: sqlite3.Cursor):
+db_name = 'requests_rooms.db'
+conn = sqlite3.connect(db_name)
+cursor = conn.cursor()
+
+def create_rooms_table(cursor: sqlite3.Cursor = cursor):
     query = """
     CREATE TABLE IF NOT EXISTS rooms (
         room_id INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -13,7 +17,7 @@ def create_rooms_table(cursor: sqlite3.Cursor):
     )"""
     cursor.execute(query)
 
-def create_requests_table(cursor: sqlite3.Cursor):
+def create_requests_table(cursor: sqlite3.Cursor = cursor):
     query = """
     CREATE TABLE IF NOT EXISTS requests (
         req_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -32,8 +36,9 @@ def create_requests_table(cursor: sqlite3.Cursor):
     idx_query = "CREATE INDEX IF NOT EXISTS idx_requests_day ON requests (day)"
     cursor.execute(idx_query)
 
-def fill_table(cursor: sqlite3.Cursor, filename, query: str, fields: set,
-               get_row_data: Callable[[Iterable], tuple]) -> int | None:
+def fill_table(filename, query: str, fields: set,
+               get_row_data: Callable[[Iterable], tuple],
+               cursor: sqlite3.Cursor = cursor) -> int | None:
     try:
         with open(filename, 'r') as fin: 
             fin_csv = csv.DictReader(fin)
@@ -67,8 +72,8 @@ def fill_table(cursor: sqlite3.Cursor, filename, query: str, fields: set,
 
     return cursor.lastrowid
 
-def fill_rooms_table(cursor: sqlite3.Cursor, 
-                     filename = 'csv/rooms.csv') -> int | None:
+def fill_rooms_table(filename = 'csv/rooms.csv',
+                     cursor: sqlite3.Cursor = cursor) -> int | None:
     fields = { 'room_id', 'name', 'capacity', 'building' }
     
     get_rooms_data = lambda row: (
@@ -81,10 +86,10 @@ def fill_rooms_table(cursor: sqlite3.Cursor,
     VALUES (?, ?, ?, ?)
     """
 
-    return fill_table(cursor, filename, query, fields, get_rooms_data)
+    return fill_table(filename, query, fields, get_rooms_data, cursor)
 
-def fill_requests_table(cursor: sqlite3.Cursor, 
-                        filename = 'csv/requests.csv') -> int | None:
+def fill_requests_table(filename = 'csv/requests.csv',
+                        cursor: sqlite3.Cursor = cursor) -> int | None:
     fields = {
         'req_id', 'room_id', 'course', 
         'start_minute', 'end_minute', 'day' }
@@ -102,9 +107,9 @@ def fill_requests_table(cursor: sqlite3.Cursor,
     ) VALUES (?, ?, ?, ?, ?, ?)
     """
 
-    return fill_table(cursor, filename, query, fields, get_requests_data)
+    return fill_table(filename, query, fields, get_requests_data, cursor)
 
-def create_requests_rooms_view(cursor: sqlite3.Cursor):
+def create_requests_rooms_view(cursor: sqlite3.Cursor = cursor):
     query = """
     CREATE VIEW IF NOT EXISTS requests_rooms
     AS
@@ -117,8 +122,8 @@ def create_requests_rooms_view(cursor: sqlite3.Cursor):
     """
     cursor.execute(query)
 
-def clear_rooms_table(cursor: sqlite3.Cursor):
+def clear_rooms_table(cursor: sqlite3.Cursor = cursor):
     cursor.execute("DELETE FROM rooms")
 
-def clear_requests_table(cursor: sqlite3.Cursor):
+def clear_requests_table(cursor: sqlite3.Cursor = cursor):
     cursor.execute("DELETE FROM requests")
