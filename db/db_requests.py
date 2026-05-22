@@ -1,6 +1,12 @@
 import sqlite3
 
 from enums.Day import Day
+import db.db_init as db
+
+requests_within_day_interval_query = """
+SELECT * FROM requests_rooms
+WHERE start_minute >= ? AND end_minute < ? AND day = ?
+"""
 
 popular_courses_per_room_query = """
 SELECT room_name, course, count(course) as course_count
@@ -13,11 +19,6 @@ FROM requests_rooms GROUP BY room_id, course HAVING course_count > ( SELECT (
     LIMIT 1
 ) * ? )
 ORDER BY room_id, course_count DESC
-"""
-
-requests_within_day_interval_query = """
-SELECT * FROM requests_rooms
-WHERE start_minute >= ? AND end_minute < ? AND day = ?
 """
 
 requests_without_room_building_query = """
@@ -65,24 +66,25 @@ GROUP BY room_name, time_of_day
 ORDER BY room_name, requests_count DESC
 """
 
-def popular_courses_per_room(cursor: sqlite3.Cursor, multiplier):
-    cursor.execute(popular_courses_per_room_query, (1 - multiplier,))
-
-    return cursor.lastrowid
-
-def requests_within_day_interval(cursor: sqlite3.Cursor, day: Day,
-                                        start_minute = 0, end_minute = 1440):
+def requests_within_day_interval(day: Day, start_minute = 0, end_minute = 1440,
+                                 cursor: sqlite3.Cursor = db.cursor):
     cursor.execute(requests_within_day_interval_query, 
                    (start_minute, end_minute, day.value,))
 
     return cursor.lastrowid
 
-def requests_without_room_building(cursor: sqlite3.Cursor):
+def popular_courses_per_room(multiplier = 0.1, cursor: sqlite3.Cursor = db.cursor):
+    cursor.execute(popular_courses_per_room_query, (1 - multiplier,))
+
+    return cursor.lastrowid
+
+def requests_without_room_building(cursor: sqlite3.Cursor = db.cursor):
     cursor.execute(requests_without_room_building_query)
 
     return cursor.lastrowid
 
-def top_rooms_workload_within_day(cursor: sqlite3.Cursor, day: Day, limit = -1):
+def top_rooms_workload_within_day(day: Day, limit = -1, 
+                                  cursor: sqlite3.Cursor = db.cursor):
     if limit == -1:
         cursor.execute(top_rooms_workload_within_day_query, (day.value,))
     else:
@@ -91,7 +93,7 @@ def top_rooms_workload_within_day(cursor: sqlite3.Cursor, day: Day, limit = -1):
 
         return cursor.lastrowid
 
-def requests_count_per_time_of_day(cursor:sqlite3.Cursor):
+def requests_count_per_time_of_day(cursor:sqlite3.Cursor = db.cursor):
     cursor.execute(requests_count_per_time_of_day_query)
 
     return cursor.lastrowid
