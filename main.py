@@ -1,7 +1,7 @@
 import argparse
 
 import db.db_init as db
-import db.db_requests as db_req
+import db.db_queries as db_q
 import analysis as ans
 from enums.Day import Day
 
@@ -37,27 +37,27 @@ def main():
 
     if args.print_sql:
         print("Запросы в понедельник:")
-        db_req.requests_within_day_interval(Day.MONDAY)
+        db_q.requests_within_day_interval(Day.MONDAY)
         print(*['\t'.join([str(item)[:4].ljust(4) for item in row]) 
                 for row in db.cursor.fetchall()], sep='\n')
 
         print("\nПопулярные курсы:")
-        db_req.popular_courses_per_room()
+        db_q.popular_courses_per_room()
         print(*['\t'.join([str(item).ljust(8) for item in row]) 
                 for row in db.cursor.fetchall()], sep='\n')
 
         print("\nЗапросы, в которых не указано здание аудитории:")
-        db_req.requests_without_room_building()
+        db_q.requests_without_room_building()
         print(*['\t'.join([str(item).ljust(8) for item in row]) 
                 for row in db.cursor.fetchall()], sep='\n')
 
         print("\nЗагруженность аудиторий в понедельник по убыванию:")
-        db_req.top_rooms_workload_within_day(Day.MONDAY)
+        db_q.top_rooms_workload_within_day(Day.MONDAY)
         print(*['\t'.join([str(item).ljust(8) for item in row]) 
                 for row in db.cursor.fetchall()], sep='\n')
 
         print("\nКоличество запросов в аудиториях по времени суток:")
-        db_req.requests_count_per_time_of_day()
+        db_q.requests_count_per_time_of_day()
         print(*['\t'.join([str(item).ljust(8) for item in row]) 
                 for row in db.cursor.fetchall()], sep='\n')
 
