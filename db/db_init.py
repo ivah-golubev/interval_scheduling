@@ -77,8 +77,10 @@ def fill_rooms_table(filename = 'csv/rooms.csv',
     fields = { 'room_id', 'name', 'capacity', 'building' }
     
     get_rooms_data = lambda row: (
-        int(row['room_id']), row['name'].lower().strip(), 
-        int(row['capacity'] or 0), row['building'].lower().strip()
+        int(row['room_id']) if row['room_id'] else None, 
+        row['name'].lower().strip(), 
+        int(row['capacity']) if row['capacity'] else None, 
+        row['building'].lower().strip()
         )
     
     query = """
@@ -95,8 +97,11 @@ def fill_requests_table(filename = 'csv/requests.csv',
         'start_minute', 'end_minute', 'day' }
     
     get_requests_data = lambda row: (
-        int(row['req_id']), int(row['room_id']), row['course'].lower().strip(),
-        int(row['start_minute'] or 0), int(row['end_minute'] or 0), 
+        int(row['req_id']) if row['req_id'] else None, 
+        int(row['room_id']) if row['room_id'] else None, 
+        row['course'].lower().strip(),
+        int(row['start_minute']) if row['start_minute'] else None, 
+        int(row['end_minute']) if row['end_minute'] else None, 
         row['day'].lower().strip()
         )
     
