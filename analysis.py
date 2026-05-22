@@ -25,6 +25,7 @@ def get_requests_within(day: Day, start_minute = 0, end_minute = 1440) -> pd.Dat
 
 def get_rooms_time_stats(day: Day, start_minute = 0, end_minute = 1440) -> pd.DataFrame:
     df = get_requests_within(day, start_minute, end_minute)
+    df['time_interval'] = df['end_minute'] - df['start_minute']
 
     stats = df.groupby(by=['room_id', 'room_name']).agg(
             first_lesson_start=('start_minute', 'min'), 
@@ -33,6 +34,9 @@ def get_rooms_time_stats(day: Day, start_minute = 0, end_minute = 1440) -> pd.Da
             last_lesson_end=('end_minute', 'max'),
             avg_start=('start_minute', 'mean'),
             avg_end=('end_minute', 'mean'),
+            min_lesson_duration=('time_interval', 'min'),
+            max_lesson_duration=('time_interval', 'max'),
+            avg_lesson_duration=('time_interval', 'mean')
     ).round(2)
 
     return stats
