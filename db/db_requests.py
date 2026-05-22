@@ -67,3 +67,24 @@ def select_top_rooms_workload_within_day(cursor: sqlite3.Cursor, day: Day, limit
         cursor.execute(query, (day.value, limit,))
 
         return cursor.lastrowid
+
+def select_requests_count_per_time_of_day(cursor:sqlite3.Cursor):
+    query = """
+    SELECT room_name,
+    CASE
+        WHEN start_minute >= 0 AND start_minute < 240 THEN 'night'
+        WHEN start_minute >= 240 AND start_minute < 420 THEN 'early_morning'
+        WHEN start_minute >= 420 AND start_minute < 600 THEN 'morning'
+        WHEN start_minute >= 600 AND start_minute < 720 THEN 'late_morning'
+        WHEN start_minute >= 720 AND start_minute < 1020 THEN 'day'
+        WHEN start_minute >= 1020 AND start_minute < 1440 THEN 'evening'
+        ELSE 'undefined' END time_of_day,
+    count(*) AS requests_count
+    FROM requests_rooms
+    WHERE start_minute >= 0 AND end_minute < 1440 AND start_minute < end_minute
+    GROUP BY room_name, time_of_day
+    ORDER BY room_name, requests_count DESC
+    """
+    cursor.execute(query)
+
+    return cursor.lastrowid
