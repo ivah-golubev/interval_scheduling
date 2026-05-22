@@ -52,11 +52,11 @@ requests_count_per_time_of_day_query = """
 SELECT room_name,
 CASE
     WHEN start_minute >= 0 AND start_minute < 240 THEN 'night'
-    WHEN start_minute >= 240 AND start_minute < 420 THEN 'early_morning'
-    WHEN start_minute >= 420 AND start_minute < 600 THEN 'morning'
-    WHEN start_minute >= 600 AND start_minute < 720 THEN 'late_morning'
-    WHEN start_minute >= 720 AND start_minute < 1020 THEN 'day'
-    WHEN start_minute >= 1020 AND start_minute < 1440 THEN 'evening'
+    WHEN start_minute >= 240 AND start_minute < 480 THEN 'morning'
+    WHEN start_minute >= 480 AND start_minute < 720 THEN 'late_morning'
+    WHEN start_minute >= 720 AND start_minute < 960 THEN 'day'
+    WHEN start_minute >= 960 AND start_minute < 1200 THEN 'evening'
+    WHEN start_minute >= 1200 AND start_minute < 1440 THEN 'late_evening'
     ELSE 'undefined' END time_of_day,
 count(*) AS requests_count
 FROM requests_rooms
