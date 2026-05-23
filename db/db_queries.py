@@ -26,7 +26,7 @@ SELECT req.req_id, req.course, req.start_minute, req.end_minute, req.day,
     rooms.name, rooms.capacity
 FROM requests AS req
 LEFT JOIN rooms ON req.room_id = rooms.room_id
-WHERE rooms.building IS NULL OR rooms.building = ''
+WHERE rooms.building IS NULL
 ORDER BY req.room_id
 """
 
