@@ -9,8 +9,9 @@ WHERE start_minute >= ? AND end_minute < ? AND day = ?
 """
 
 popular_courses_per_room_query = """
-SELECT room_name, course, count(course) as course_count
-FROM requests_rooms GROUP BY room_id, course HAVING course_count > ( SELECT (
+SELECT req_id, room_name, course, count(course) as course_count
+FROM requests_rooms 
+GROUP BY room_id, course HAVING course_count > ( SELECT (
     SELECT count(course) as room_course_count
     FROM requests_rooms AS rr
     WHERE rr.room_id = room_id
@@ -18,7 +19,7 @@ FROM requests_rooms GROUP BY room_id, course HAVING course_count > ( SELECT (
     ORDER BY rr.room_id, room_course_count DESC
     LIMIT 1
 ) * ? )
-ORDER BY room_id, course_count DESC
+ORDER BY room_id, room_name, course_count DESC
 """
 
 requests_without_room_building_query = """

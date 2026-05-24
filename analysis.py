@@ -72,8 +72,24 @@ def get_rooms_workload_by_hours(day: Day):
         df_add = df_add.loc[df_add['current_hour'] <= df_add['end_hour']]
         df = pd.concat([df, df_add], ignore_index=True)
 
-    df = df.groupby(['room_id', 'current_hour']).size().reset_index(name='workload')
-    df = df.pivot(columns='current_hour', index='room_id', values='workload')
+    df = df.groupby(['room_id', 'room_name', 'current_hour']) \
+        .size().reset_index(name='workload')
+    df = df.pivot(columns='current_hour', index='room_name', values='workload')
     df = df.fillna(0).astype('int32')
     
     return df
+
+def get_rooms_courses_count(multiplier = 1) -> pd.DataFrame:
+    df = pd.read_sql_query(db_q.popular_courses_per_room_query, 
+                           db.conn, index_col='req_id', 
+                           params=(1 - multiplier,))
+    
+    df = df.pivot(index='room_name', columns='course', values='course_count')
+    df = df.fillna(0).astype('int32')
+    
+    return df
+
+def get_popular_courses() -> pd.DataFrame:
+    df = get_rooms_courses_count()
+    return df.sum().reset_index(name='requests_count') \
+        .sort_values(by='requests_count', ignore_index=True, ascending=False)
