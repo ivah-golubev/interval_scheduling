@@ -93,3 +93,28 @@ def get_popular_courses() -> pd.DataFrame:
     df = get_rooms_courses_count()
     return df.sum().reset_index(name='requests_count') \
         .sort_values(by='requests_count', ignore_index=True, ascending=False)
+
+def get_all_rooms() -> pd.DataFrame:
+    df = pd.read_sql_query('SELECT * FROM rooms', db.conn, index_col='room_id')
+    
+    if 'name' in df.columns:
+        df['name'] = df['name'].fillna('undefined')
+    if 'building' in df.columns:
+        df['building'] = df['building'].fillna('undefined')
+    if 'capacity' in df.columns:
+        df['capacity'] = df['capacity'].fillna(0)
+
+    return validate_null_values(df)
+
+def get_requests_rooms_all(day: Day, start_minute = 0, end_minute = 1440) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    df_requests_rooms = get_requests_within(day, start_minute, end_minute)
+    df_rooms = get_all_rooms()
+
+    df_merged = df_requests_rooms.merge(df_rooms, 'right', on='room_id')
+    return df_merged[df_requests_rooms.columns.to_list()], df_requests_rooms, df_rooms 
+
+def get_rooms_without_requests(day: Day, start_minute = 0, end_minute = 1440) -> pd.DataFrame:
+    df_merged, df_requests_rooms, df_rooms = get_requests_rooms_all(day, start_minute, end_minute)
+
+    cond = ~df_merged.apply(tuple, axis=1).isin(df_requests_rooms.apply(tuple, axis=1))
+    return df_rooms[df_rooms.index.isin(df_merged[cond]['room_id'])]
