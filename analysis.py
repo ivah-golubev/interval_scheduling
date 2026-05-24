@@ -61,3 +61,19 @@ def get_rooms_time_stats(day: Day, start_minute = 0, end_minute = 1440) -> pd.Da
 
     return stats
 
+def get_rooms_workload_by_hours(day: Day):
+    df = get_requests_within(day)
+    df['current_hour'] = df['start_minute'] // 60
+    df['end_hour'] = df['end_minute'] // 60
+    
+    df_add = df.copy()
+    while(df_add.shape[0]):
+        df_add['current_hour'] += 1
+        df_add = df_add.loc[df_add['current_hour'] <= df_add['end_hour']]
+        df = pd.concat([df, df_add], ignore_index=True)
+
+    df = df.groupby(['room_id', 'current_hour']).size().reset_index(name='workload')
+    df = df.pivot(columns='current_hour', index='room_id', values='workload')
+    df = df.fillna(0).astype('int32')
+    
+    return df
