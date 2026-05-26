@@ -1,3 +1,4 @@
+from matplotlib import pyplot as plt
 import pandas as pd
 import db.db_init as db
 import db.db_queries as db_q
@@ -118,3 +119,23 @@ def get_rooms_without_requests(day: Day, start_minute = 0, end_minute = 1440) ->
 
     cond = ~df_merged.apply(tuple, axis=1).isin(df_requests_rooms.apply(tuple, axis=1))
     return df_rooms[df_rooms.index.isin(df_merged[cond]['room_id'])]
+
+def get_all_requests() -> pd.DataFrame:
+    df = pd.read_sql_query("SELECT * FROM requests_rooms", 
+                           db.conn, index_col='req_id')
+    
+    df.drop_duplicates(inplace=True)
+    df = validate_null_values(df)
+    df = validate_time_bounds(df)
+
+    return df
+
+def draw_requests_amount_by_day():
+    df = get_all_requests()
+
+    df = df.groupby('day').size().reset_index(name='req_count')
+    
+    df.plot.bar(x='day', y='req_count')
+    plt.tight_layout()
+    plt.savefig('report/req_count_by_day.png')
+    plt.show()
