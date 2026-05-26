@@ -75,8 +75,8 @@ def get_rooms_workload_by_hours(day: Day):
 
     df = df.groupby(['room_id', 'room_name', 'current_hour']) \
         .size().reset_index(name='workload')
-    df = df.pivot(columns='current_hour', index='room_name', values='workload')
-    df = df.fillna(0).astype('int32')
+    # df = df.pivot(columns='current_hour', index='room_name', values='workload')
+    # df = df.fillna(0).astype('int32')
     
     return df
 
@@ -130,7 +130,7 @@ def get_all_requests() -> pd.DataFrame:
 
     return df
 
-def draw_requests_amount_by_day():
+def draw_requests_count_by_day():
     df = get_all_requests()
 
     df = df.groupby('day').size().reset_index(name='req_count')
@@ -139,3 +139,26 @@ def draw_requests_amount_by_day():
     plt.tight_layout()
     plt.savefig('report/req_count_by_day.png')
     plt.show()
+
+def draw_requests_count_distribution(day: Day):
+    df = get_rooms_workload_by_hours(day)
+
+    print(df)
+
+    df_add = df.copy()
+    while(df_add.shape[0]):
+        df_add['workload'] -= 1
+        df_add = df_add.loc[df_add['workload'] >= 0]
+        df = pd.concat([df, df_add], ignore_index=True)
+
+    df.rename(columns={'current_hour': 'requests_count'}, inplace=True)
+
+    df[['requests_count']].plot.hist(
+        title=f'Requests duration ({day.value})', legend=False,
+        xlabel='Hours', ylabel='Requests Count')
+    
+    plt.tight_layout()
+    plt.savefig('report/req_count_distribution.png')
+    plt.show()
+
+
