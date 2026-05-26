@@ -154,11 +154,29 @@ def draw_requests_count_distribution(day: Day):
     df.rename(columns={'current_hour': 'requests_count'}, inplace=True)
 
     df[['requests_count']].plot.hist(
-        title=f'Requests duration ({day.value})', legend=False,
+        title=f'Requests count ({day.value})', legend=False,
         xlabel='Hours', ylabel='Requests Count')
     
     plt.tight_layout()
     plt.savefig('report/req_count_distribution.png')
     plt.show()
 
+def workload_by_hours_and_rooms(day: Day, room_count_x = 2, room_count_y = 3):
+    df = get_rooms_workload_by_hours(day)
 
+    fig, axes = plt.subplots(room_count_x, room_count_y)
+
+    rooms = list(df['room_name'].unique())[:room_count_x * room_count_y]
+
+    for x in range(room_count_x):
+        for y in range(room_count_y):
+            room_name = rooms[y * room_count_x + x]
+            df.loc[df['room_name'] == room_name].plot(
+                    ax=axes[x, y], x='current_hour', y='workload', 
+                    sharex=False, sharey=False, title=room_name,
+                    xlabel='hours', legend=None, figsize=(10, 6))
+    
+    fig.suptitle(f'Requests count by hours and rooms ({day.value})')
+    fig.tight_layout()
+    fig.savefig('report/req_count_by_hours_and_rooms.png')
+    plt.show()
