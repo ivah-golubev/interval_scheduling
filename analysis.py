@@ -140,6 +140,8 @@ def draw_requests_count_by_day():
     plt.savefig('report/req_count_by_day.png')
     plt.show()
 
+    return df
+
 def draw_requests_count_distribution(day: Day):
     df = get_rooms_workload_by_hours(day)
 
@@ -161,7 +163,7 @@ def draw_requests_count_distribution(day: Day):
     plt.savefig('report/req_count_distribution.png')
     plt.show()
 
-def workload_by_hours_and_rooms(day: Day, room_count_x = 2, room_count_y = 3):
+def draw_workload_by_hours_and_rooms(day: Day, room_count_x = 2, room_count_y = 3):
     df = get_rooms_workload_by_hours(day)
 
     fig, axes = plt.subplots(room_count_x, room_count_y)
