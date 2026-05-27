@@ -10,7 +10,7 @@ import algorithm as alg
 from enums.Day import Day
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--fill_tables', dest='fill_tables', action='store_true', default=True)
+parser.add_argument('--ignore_tables', dest='ignore_tables', action='store_true')
 parser.add_argument('--clear_tables', dest='clear_tables', action='store_true')
 args = parser.parse_args()
 delimiter_str = '-' * 50
@@ -193,18 +193,19 @@ def main():
     db.create_requests_table()
     db.conn.commit()
     
-    if args.fill_tables:
+    if not args.ignore_tables:
         db.fill_rooms_table()
         db.conn.commit()
         
         db.fill_requests_table()
         db.conn.commit()
-    elif args.clear_tables:
+    if args.clear_tables:
         db.clear_rooms_table()
         db.conn.commit()
         
         db.clear_requests_table()
         db.conn.commit()
+        return
 
     db.create_requests_rooms_view()
     db.conn.commit()
