@@ -1,4 +1,5 @@
 import argparse
+from datetime import datetime
 
 import db.db_init as db
 import db.db_queries as db_q
@@ -98,7 +99,7 @@ def print_plots():
     ans.draw_requests_count_distribution(Day.THURSDAY)
     ans.draw_workload_by_hours_and_rooms(Day.FRIDAY)
 
-def print_alg():
+def print_alg(alg_func):
     print()
     print(delimiter_str)
     print("Исходное расписание для аудитории 1 в понедельник:")
@@ -107,7 +108,7 @@ def print_alg():
 
     print()
     print("Максимальное непересекающееся расписание:")
-    print(alg.max_schedule(1, Day.MONDAY))
+    print(alg_func(1, Day.MONDAY))
 
     print()
     print(delimiter_str)
@@ -117,7 +118,7 @@ def print_alg():
 
     print()
     print("Максимальное непересекающееся расписание:")
-    print(alg.max_schedule(5, Day.TUESDAY))
+    print(alg_func(5, Day.TUESDAY))
 
     print()
     print(delimiter_str)
@@ -127,7 +128,7 @@ def print_alg():
 
     print()
     print("Максимальное непересекающееся расписание:")
-    print(alg.max_schedule(8, Day.WEDNESDAY))
+    print(alg_func(8, Day.WEDNESDAY))
 
     print()
     print(delimiter_str)
@@ -137,7 +138,7 @@ def print_alg():
 
     print()
     print("Максимальное непересекающееся расписание:")
-    print(alg.max_schedule(3, Day.THURSDAY))
+    print(alg_func(3, Day.THURSDAY))
 
     print()
     print(delimiter_str)
@@ -147,7 +148,43 @@ def print_alg():
 
     print()
     print("Максимальное непересекающееся расписание:")
-    print(alg.max_schedule(2, Day.FRIDAY))
+    print(alg_func(2, Day.FRIDAY))
+
+def print_alg_time(n = 1000):
+    print()
+    print(delimiter_str)
+    print("Исходное расписание для аудитории 1 в понедельник:")
+    print(delimiter_str)
+
+    print()
+    print(delimiter_str)
+    print(f"Алгоритм 1 (цикл выполняется {n} раз)")
+    print(delimiter_str)
+
+    start = datetime.now()
+    for _ in range(n):
+        alg.max_schedule(1, Day.MONDAY)
+    print(f"Время: {datetime.now() - start}")
+
+    print()
+    print(delimiter_str)
+    print(f"Алгоритм 2 (цикл выполняется {n} раз)")
+    print(delimiter_str)
+
+    start = datetime.now()
+    for _ in range(n):
+        alg.max_schedule_2(1, Day.MONDAY)
+    print(f"Время: {datetime.now() - start}")
+
+    print()
+    print(delimiter_str)
+    print(f"Алгоритм 3 (цикл выполняется {n} раз)")
+    print(delimiter_str)
+
+    start = datetime.now()
+    for _ in range(n):
+        alg.max_schedule_bin_sch(1, Day.MONDAY)
+    print(f"Время: {datetime.now() - start}")
 
 def main():
     db.create_rooms_table()
@@ -176,8 +213,11 @@ def main():
         print("1 - Запросы SQL")
         print("2 - Анализ")
         print("3 - Графики")
-        print("4 - Алг. задача (максимальное расписание)")
-        print("5 - Выход")
+        print("4 - Максимальное расписание (алгоритм 1)")
+        print("5 - Максимальное расписание (алгоритм 2)")
+        print("6 - Максимальное расписание (алгоритм 3, бин. поиск)")
+        print("7 - Сравнение времени выполнения алгоритмов")
+        print("8 - Выход")
         print("Выберите задание из списка выше: ", end='')
 
         command = input()
@@ -185,8 +225,11 @@ def main():
             case '1': print_sql()
             case '2': print_pandas()
             case '3': print_plots()
-            case '4': print_alg()
-            case '5': break
+            case '4': print_alg(alg.max_schedule)
+            case '5': print_alg(alg.max_schedule_2)
+            case '6': print_alg(alg.max_schedule_bin_sch)
+            case '7': print_alg_time()
+            case '8': break
             case _: print("Неверный ввод")
         print()
 
