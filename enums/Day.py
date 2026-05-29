@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+
 class Day(StrEnum):
     MONDAY = 'mon'
     TUESDAY = 'tue'

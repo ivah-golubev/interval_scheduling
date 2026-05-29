@@ -67,34 +67,39 @@ GROUP BY room_name, time_of_day
 ORDER BY room_name, requests_count DESC
 """
 
-def requests_within_day_interval(day: Day, start_minute = 0, end_minute = 1440,
+
+def requests_within_day_interval(day: Day, start_minute=0, end_minute=1440,
                                  cursor: sqlite3.Cursor = db.cursor):
-    cursor.execute(requests_within_day_interval_query, 
+    cursor.execute(requests_within_day_interval_query,
                    (start_minute, end_minute, day.value,))
 
     return cursor.lastrowid
 
-def popular_courses_per_room(multiplier = 0.1, cursor: sqlite3.Cursor = db.cursor):
+
+def popular_courses_per_room(multiplier=0.1, cursor: sqlite3.Cursor = db.cursor):
     cursor.execute(popular_courses_per_room_query, (1 - multiplier,))
 
     return cursor.lastrowid
+
 
 def requests_without_room_building(cursor: sqlite3.Cursor = db.cursor):
     cursor.execute(requests_without_room_building_query)
 
     return cursor.lastrowid
 
-def top_rooms_workload_within_day(day: Day, limit = -1, 
+
+def top_rooms_workload_within_day(day: Day, limit=-1,
                                   cursor: sqlite3.Cursor = db.cursor):
     if limit == -1:
         cursor.execute(top_rooms_workload_within_day_query, (day.value,))
     else:
-        cursor.execute(top_rooms_workload_within_day_limit_query, 
+        cursor.execute(top_rooms_workload_within_day_limit_query,
                        (day.value, limit,))
 
-        return cursor.lastrowid
+    return cursor.lastrowid
 
-def requests_count_per_time_of_day(cursor:sqlite3.Cursor = db.cursor):
+
+def requests_count_per_time_of_day(cursor: sqlite3.Cursor = db.cursor):
     cursor.execute(requests_count_per_time_of_day_query)
 
     return cursor.lastrowid

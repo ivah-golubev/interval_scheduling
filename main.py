@@ -15,13 +15,15 @@ parser.add_argument('--clear_tables', dest='clear_tables', action='store_true')
 args = parser.parse_args()
 delimiter_str = '-' * 50
 
+
+
 def print_sql():
     print(delimiter_str)
     print("Запросы в понедельник:")
     print(delimiter_str)
     db_q.requests_within_day_interval(Day.MONDAY)
     print('\t'.join([str(item[0]).ljust(8) for item in db.cursor.description[:-3]]))
-    print(*['\t'.join([str(item).ljust(8) for item in row[:-3]]) 
+    print(*['\t'.join([str(item).ljust(8) for item in row[:-3]])
             for row in db.cursor.fetchall()], sep='\n')
 
     print()
@@ -30,7 +32,7 @@ def print_sql():
     print(delimiter_str)
     db_q.popular_courses_per_room()
     print('\t'.join([str(item[0]).ljust(8) for item in db.cursor.description]))
-    print(*['\t'.join([str(item).ljust(8) for item in row]) 
+    print(*['\t'.join([str(item).ljust(8) for item in row])
             for row in db.cursor.fetchall()], sep='\n')
 
     print()
@@ -39,7 +41,7 @@ def print_sql():
     print(delimiter_str)
     db_q.requests_without_room_building()
     print('\t'.join([str(item[0]).ljust(8) for item in db.cursor.description]))
-    print(*['\t'.join([str(item).ljust(8) for item in row]) 
+    print(*['\t'.join([str(item).ljust(8) for item in row])
             for row in db.cursor.fetchall()], sep='\n')
 
     print()
@@ -48,7 +50,7 @@ def print_sql():
     print(delimiter_str)
     db_q.top_rooms_workload_within_day(Day.MONDAY)
     print('\t'.join([str(item[0]).ljust(8) for item in db.cursor.description]))
-    print(*['\t'.join([str(item).ljust(8) for item in row]) 
+    print(*['\t'.join([str(item).ljust(8) for item in row])
             for row in db.cursor.fetchall()], sep='\n')
 
     print()
@@ -57,14 +59,15 @@ def print_sql():
     print(delimiter_str)
     db_q.requests_count_per_time_of_day()
     print('\t'.join([str(item[0]).ljust(8) for item in db.cursor.description]))
-    print(*['\t'.join([str(item).ljust(8) for item in row]) 
+    print(*['\t'.join([str(item).ljust(8) for item in row])
             for row in db.cursor.fetchall()], sep='\n')
+
 
 def print_pandas():
     print()
     print(delimiter_str)
     print(
-        "Занятия в понедельник (после валидации временных интервалов, " 
+        "Занятия в понедельник (после валидации временных интервалов, "
         "пустых значений и повторяющихся строк):"
     )
     print(delimiter_str)
@@ -94,10 +97,12 @@ def print_pandas():
     print(delimiter_str)
     print(ans.get_rooms_without_requests(Day.WEDNESDAY))
 
+
 def print_plots():
     ans.draw_requests_count_by_day()
     ans.draw_requests_count_distribution(Day.THURSDAY)
     ans.draw_workload_by_hours_and_rooms(Day.FRIDAY)
+
 
 def print_alg(alg_func):
     print()
@@ -150,7 +155,8 @@ def print_alg(alg_func):
     print("Максимальное непересекающееся расписание:")
     print(alg_func(2, Day.FRIDAY))
 
-def print_alg_time(n = 1000):
+
+def print_alg_time(n=1000):
     print()
     print(delimiter_str)
     print("Исходное расписание для аудитории 1 в понедельник:")
@@ -186,23 +192,24 @@ def print_alg_time(n = 1000):
         alg.max_schedule_bin_sch(1, Day.MONDAY)
     print(f"Время: {datetime.now() - start}")
 
+
 def main():
     db.create_rooms_table()
     db.conn.commit()
 
     db.create_requests_table()
     db.conn.commit()
-    
+
     if not args.ignore_tables:
         db.fill_rooms_table()
         db.conn.commit()
-        
+
         db.fill_requests_table()
         db.conn.commit()
     if args.clear_tables:
         db.clear_rooms_table()
         db.conn.commit()
-        
+
         db.clear_requests_table()
         db.conn.commit()
         return
@@ -210,7 +217,7 @@ def main():
     db.create_requests_rooms_view()
     db.conn.commit()
 
-    while(True):
+    while True:
         print("1 - Запросы SQL")
         print("2 - Анализ")
         print("3 - Графики")
@@ -223,16 +230,26 @@ def main():
 
         command = input()
         match command:
-            case '1': print_sql()
-            case '2': print_pandas()
-            case '3': print_plots()
-            case '4': print_alg(alg.max_schedule)
-            case '5': print_alg(alg.max_schedule_2)
-            case '6': print_alg(alg.max_schedule_bin_sch)
-            case '7': print_alg_time()
-            case '8': break
-            case _: print("Неверный ввод")
+            case '1':
+                print_sql()
+            case '2':
+                print_pandas()
+            case '3':
+                print_plots()
+            case '4':
+                print_alg(alg.max_schedule)
+            case '5':
+                print_alg(alg.max_schedule_2)
+            case '6':
+                print_alg(alg.max_schedule_bin_sch)
+            case '7':
+                print_alg_time()
+            case '8':
+                break
+            case _:
+                print("Неверный ввод")
         print()
+
 
 if __name__ == '__main__':
     main()
